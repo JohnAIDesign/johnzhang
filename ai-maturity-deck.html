@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企业 AI 成熟度诊断</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root{ --navy:#1F3A5F; --navy2:#2E74B5; --gold:#C9A227; --ink:#1a2230; --gray:#5c6b7a; --bg:#eef1f5; }
+body{ font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--ink); }
+.toolbar{ position:fixed; top:12px; right:12px; z-index:99; }
+.toolbar button{ background:var(--navy); color:#fff; border:none; padding:10px 18px; border-radius:8px; font-size:14px; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.2); }
+.slide{ width:960px; height:540px; margin:24px auto; background:#fff; border-radius:12px; box-shadow:0 6px 24px rgba(0,0,0,.12); padding:56px 64px; position:relative; overflow:hidden; display:flex; flex-direction:column; }
+h1{ font-size:46px; color:var(--navy); font-weight:800; letter-spacing:1px; }
+h2{ font-size:32px; color:var(--navy); font-weight:800; margin-bottom:28px; }
+h3{ font-size:20px; color:var(--navy); margin-bottom:10px; }
+p{ font-size:18px; line-height:1.7; color:var(--ink); }
+.subtitle{ font-size:24px; color:var(--gray); margin-top:18px; }
+.lead{ font-size:21px; line-height:1.9; color:var(--ink); margin-top:20px; }
+.footline{ margin-top:auto; padding-top:24px; font-size:18px; color:var(--gray); border-top:2px solid #eef1f5; }
+.footline b{ color:var(--navy); }
+small{ font-size:14px; color:#9aa7b3; }
+
+/* cover */
+.cover{ height:100%; display:flex; flex-direction:column; justify-content:center; align-items:flex-start; background:linear-gradient(135deg,var(--navy),#16283f); margin:-56px -64px; padding:56px 64px; }
+.cover h1{ color:#fff; font-size:54px; }
+.cover .subtitle{ color:#cfe0f2; }
+.progress-band{ position:absolute; top:0; left:0; height:8px; width:100%; background:linear-gradient(90deg,var(--gold),var(--navy2)); }
+.cover-foot{ margin-top:40px; color:#9fb6d1; font-size:16px; letter-spacing:2px; }
+
+.center-block{ height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; }
+.big-quote{ font-size:30px; color:var(--navy); line-height:1.6; font-weight:800; }
+
+/* cards */
+.cards-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+.cards-4{ display:grid; grid-template-columns:repeat(2,1fr); gap:22px; }
+.card{ background:#f7f9fc; border-left:5px solid var(--navy2); border-radius:8px; padding:22px; }
+.card .num{ font-size:30px; font-weight:800; color:var(--gold); margin-bottom:6px; }
+.card p{ font-size:16px; color:var(--gray); }
+
+/* quad */
+.quad{ display:grid; grid-template-columns:1fr 1fr; gap:18px; flex:1; }
+.q{ border-radius:10px; padding:26px; display:flex; flex-direction:column; justify-content:center; }
+.q1{ background:#eaf2fb; } .q2{ background:#fef6e6; } .q3{ background:#eef7ee; } .q4{ background:#f4eef9; }
+.tag{ display:inline-block; font-size:20px; font-weight:800; color:var(--navy); margin-bottom:10px; }
+.q p{ font-size:17px; color:var(--gray); }
+
+/* flow */
+.flow{ display:flex; align-items:center; justify-content:center; gap:18px; margin:30px 0; }
+.flow-step{ background:var(--navy); color:#fff; border-radius:10px; padding:22px 26px; text-align:center; font-size:19px; font-weight:700; }
+.flow-step small{ display:block; color:#bcd3ee; font-size:13px; margin-top:6px; font-weight:400; }
+.arrow{ font-size:30px; color:var(--navy2); font-weight:800; }
+
+/* two col */
+.two-col{ display:grid; grid-template-columns:1.3fr 1fr; gap:30px; flex:1; align-items:center; }
+.warn{ color:#c0392b; margin:14px 0; }
+.dots{ display:grid; grid-template-columns:repeat(5,1fr); gap:14px; font-size:34px; color:#c7d2dd; text-align:center; }
+.dots .gold{ color:var(--gold); font-size:40px; }
+
+/* bench */
+.bench{ flex:1; display:flex; align-items:center; justify-content:center; }
+.curve{ width:70%; height:120px; background:linear-gradient(90deg,#eef1f5,var(--navy2)); border-radius:60px; position:relative; }
+.marker{ position:absolute; right:22%; top:-34px; background:var(--gold); color:#fff; padding:6px 14px; border-radius:6px; font-size:15px; font-weight:700; }
+.marker::after{ content:""; position:absolute; bottom:-8px; left:50%; margin-left:-6px; border:6px solid transparent; border-top-color:var(--gold); }
+.benchlist{ margin:16px 0 0 20px; } .benchlist li{ font-size:19px; margin:8px 0; }
+
+/* timeline */
+.timeline{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; flex:1; align-items:center; }
+.tl{ background:#f7f9fc; border-top:4px solid var(--gold); border-radius:8px; padding:20px; }
+.tl-week{ display:block; color:var(--navy2); font-weight:800; font-size:15px; margin-bottom:8px; }
+.tl b{ font-size:20px; color:var(--navy); } .tl p{ font-size:15px; color:var(--gray); margin-top:6px; }
+
+.closing{ font-size:52px; color:var(--navy); margin-bottom:20px; }
+.cta{ font-size:22px; color:var(--gold); font-weight:800; margin-top:18px; }
+.pilot{ font-size:18px; color:var(--gray); margin-top:14px; }
+
+@media print{
+  body{ background:#fff; }
+  .toolbar{ display:none; }
+  .slide{ margin:0; box-shadow:none; border-radius:0; page-break-after:always; width:100%; height:100vh; }
+  @page{ size:landscape; margin:0; }
+}
+</style>
+</head>
+<body>
+<div class="toolbar"><button onclick="window.print()">打印 / 保存为 PDF</button></div>
+<section class="slide">
+<div class="cover">
+  <div class="progress-band"></div>
+  <h1>企业 AI 成熟度诊断</h1>
+  <p class="subtitle">看清你的组织，到底走到了 AI 的哪一步</p>
+  <div class="cover-foot"><span>专业测量 · 全景诊断 · 行业对标</span></div>
+</div>
+</section>
+<section class="slide">
+<div class="center-block">
+  <h2 class="big-quote">"过去一年，你在 AI 上投入了时间、预算和期待——<br>但你说得清，它到底带来了什么改变吗？"</h2>
+  <p class="lead">大多数企业的答案是：<b>说不清。</b><br>不是没投入，而是从没被真正测量过。</p>
+</div>
+</section>
+<section class="slide">
+<h2>你可能正面临这三种情况</h2>
+<div class="cards-3">
+  <div class="card"><div class="num">01</div><h3>热闹但零散</h3><p>员工各自在用，但没人知道整体水平，也没人带头。</p></div>
+  <div class="card"><div class="num">02</div><h3>想推却推不动</h3><p>高层有决心，但落地卡在中层、卡在基础，不知从哪下手。</p></div>
+  <div class="card"><div class="num">03</div><h3>投入难衡量</h3><p>花了钱上工具，却拿不出一份能向董事会交代的成果。</p></div>
+</div>
+<p class="footline">问题不在于"要不要做 AI"，而在于——<b>你根本看不清现状。</b></p>
+</section>
+<section class="slide">
+<h2>AI 转型，你需要同时看清四件事</h2>
+<div class="quad">
+  <div class="q q1"><span class="tag">人 People</span><p>谁在用、谁是高手、整体能力到什么程度</p></div>
+  <div class="q q2"><span class="tag">事 Process</span><p>哪些工作最该用 AI、投入产出最高的场景在哪</p></div>
+  <div class="q q3"><span class="tag">势 Strategy</span><p>高层想不想、敢不敢、战略清不清晰</p></div>
+  <div class="q q4"><span class="tag">基 Foundation</span><p>数据 / 系统 / 流程，撑不撑得起 AI 落地</p></div>
+</div>
+<p class="footline">只看其中一个，都是盲人摸象。四个一起看，才是全景。</p>
+</section>
+<section class="slide">
+<h2>一次体检，四维透视，一份诊断</h2>
+<div class="flow">
+  <div class="flow-step">四份专业问卷<small>员工 + 管理层 + 负责人</small></div>
+  <div class="arrow">→</div>
+  <div class="flow-step">AI 智能分析<small>定量打分 + 定性洞察</small></div>
+  <div class="arrow">→</div>
+  <div class="flow-step">诊断报告<small>+ 高管解读会</small></div>
+</div>
+<p class="lead">就像给企业做一次"AI 体检"——不是告诉你该买什么工具，<br>而是告诉你：<b>你现在在哪、短板在哪、下一步该走哪。</b></p>
+</section>
+<section class="slide">
+<h2>诊断结束，你将获得</h2>
+<div class="cards-4">
+  <div class="card"><h3>① AI 能力金字塔</h3><p>全员从 L1 到 L6 的分布，一眼看清组织成熟度。</p></div>
+  <div class="card"><h3>② 三高场景排行</h3><p>最该优先上 AI 的工作场景 Top 10，带优先级。</p></div>
+  <div class="card"><h3>③ 战略四象限定位</h3><p>你和你的班子，到底是"引领型"还是"观望型"。</p></div>
+  <div class="card"><h3>④ 组织基础雷达</h3><p>数据 / 系统 / 流程七维体检，哪块地基塌了一目了然。</p></div>
+</div>
+</section>
+<section class="slide">
+<h2>每家企业，都藏着几个 AI 超级个体</h2>
+<div class="two-col">
+  <div class="tc-left">
+    <p>在你的组织里，一定有几个人已经把 AI 用得出神入化——<br>他们自己搭流程、带同事、悄悄提升了整个团队的效率。</p>
+    <p class="warn">但你可能：<b>不知道他们是谁，更没让他们发挥更大价值。</b></p>
+    <p>我们的诊断会精准找出这些"火种"，并给出如何让他们带动全公司的建议。</p>
+  </div>
+  <div class="tc-right">
+    <div class="dots">
+      <span>•</span><span>•</span><span class="gold">★</span><span>•</span><span>•</span>
+      <span>•</span><span class="gold">★</span><span>•</span><span>•</span><span>•</span>
+      <span>•</span><span>•</span><span>•</span><span class="gold">★</span><span>•</span>
+    </div>
+  </div>
+</div>
+<p class="footline">找对 3 个人，可能比买 10 个工具更能推动你的 AI 转型。</p>
+</section>
+<section class="slide">
+<h2>单项分数不稀奇，交叉起来才是真诊断</h2>
+<div class="cards-3">
+  <div class="card"><h3>老板决心强 × 员工能力弱</h3><p>你在推空转，该先补人。</p></div>
+  <div class="card"><h3>遍地是高手 × 没有机制</h3><p>高手在自嗨，组织没接住。</p></div>
+  <div class="card"><h3>急着大干 × 基础薄弱</h3><p>地基没打好，投入会打水漂。</p></div>
+</div>
+<p class="footline">我们不只给你四个分数，<br>而是告诉你这四个分数合在一起，<b>意味着什么、该先做什么。</b></p>
+</section>
+<section class="slide">
+<h2>你想知道——比同行强，还是弱？</h2>
+<div class="bench">
+  <div class="curve"><div class="marker">你在这里</div></div>
+</div>
+<ul class="benchlist">
+  <li>你的 AI 成熟度，超过了行业里 <b>XX%</b> 的企业</li>
+  <li>你在"决心"上领先，但在"基础"上落后头部企业</li>
+</ul>
+<p class="footline">一次诊断给你坐标，持续追踪让你看见进步。<br><small>行业对标随我们服务的企业增多而越来越精准。</small></p>
+</section>
+<section class="slide">
+<h2>不是拍脑袋的问卷，是有方法学根基的测量</h2>
+<div class="cards-3">
+  <div class="card"><h3>理论根基</h3><p>基于国际成熟的能力成熟度与技术采纳理论。</p></div>
+  <div class="card"><h3>双重验证</h3><p>定量打分 + AI 定性分析，交叉验证。</p></div>
+  <div class="card"><h3>可追溯</h3><p>每一个结论，都能追溯到具体数据和员工原话。</p></div>
+</div>
+<p class="footline">专业的测量，才配得上你的决策。</p>
+</section>
+<section class="slide">
+<h2>4–6 周，一个完整诊断</h2>
+<div class="timeline">
+  <div class="tl"><span class="tl-week">第 0 周</span><b>启动</b><p>确定范围、对齐部门</p></div>
+  <div class="tl"><span class="tl-week">第 1-2 周</span><b>采集</b><p>员工线上答卷 + 高管访谈</p></div>
+  <div class="tl"><span class="tl-week">第 3-4 周</span><b>分析</b><p>AI 计分 + 交叉诊断 + 对标</p></div>
+  <div class="tl"><span class="tl-week">第 5-6 周</span><b>交付</b><p>诊断报告 + 高管解读会</p></div>
+</div>
+<p class="footline">全程由我们主导，你的团队只需轻度配合。</p>
+</section>
+<section class="slide">
+<div class="center-block">
+  <h1 class="closing">先看清，再出发。</h1>
+  <p class="lead">AI 转型最贵的成本，不是买工具的钱，<br>而是——在看不清的情况下，把资源投错了方向。</p>
+  <p class="cta">一次诊断，让你的每一分 AI 投入，都花在刀刃上。</p>
+  <p class="pilot">我们可以先做一次小范围试点，让你亲眼看到结果。</p>
+  <div class="cover-foot"><span>【联系方式 / 品牌】</span></div>
+</div>
+</section>
+</body>
+</html>
