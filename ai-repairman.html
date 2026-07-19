@@ -1,126 +1,243 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI修理工 — 企业AI落地诊断与改造</title>
 <style>
-  :root{--ink:#111;--orange:#ff7a00;--muted:#777;--bg:#fafafa;--white:#fff;}
+  :root{--ink:#111;--orange:#ff7a00;--muted:#777;--bg:#fafafa;--card-bg:#fff;--border:#eee;--shadow:rgba(0,0,0,.06);}
+  [data-theme="dark"]{--ink:#e0e0e0;--orange:#ff8c1a;--muted:#999;--bg:#1a1a1a;--card-bg:#252525;--border:#333;--shadow:rgba(0,0,0,.3);--nav-bg:rgba(26,26,26,.95);}
   *{margin:0;padding:0;box-sizing:border-box;}
-  body{font-family:"PingFang SC","Microsoft YaHei",-apple-system,sans-serif;color:var(--ink);background:var(--bg);}
-  header{text-align:center;padding:80px 20px 40px;background:var(--white);border-bottom:1px solid #eee;}
+  html{scroll-behavior:smooth;}
+  body{font-family:"PingFang SC","Microsoft YaHei",-apple-system,sans-serif;color:var(--ink);background:var(--bg);transition:background .3s,color .3s;}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,250,250,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px;}
+  [data-theme="dark"] nav{background:var(--nav-bg);}
+  .nav-logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:18px;color:var(--ink);text-decoration:none;}
+  .nav-logo svg{height:36px;width:auto;}
+  .nav-links{display:flex;gap:24px;align-items:center;}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:14px;transition:color .2s;}
+  .nav-links a:hover{color:var(--orange);}
+  .theme-btn{background:none;border:1px solid var(--border);border-radius:20px;padding:6px 14px;cursor:pointer;font-size:14px;color:var(--ink);}
+
+  header{text-align:center;padding:120px 20px 60px;}
   .logo-inline{margin:0 auto 16px;max-width:500px;}
   .logo-inline svg{width:100%;height:auto;}
-  .tagline-big{font-size:20px;color:var(--muted);margin-top:8px;letter-spacing:6px;}
-  main{max-width:800px;margin:0 auto;padding:40px 20px;}
-  .section{margin:48px 0;}
-  h2{font-size:28px;color:var(--ink);margin-bottom:16px;}
+  .hero-sub{font-size:20px;color:var(--muted);margin-top:12px;letter-spacing:6px;}
+
+  .container{max-width:800px;margin:0 auto;padding:0 20px;}
+
+  h2{font-size:28px;margin:60px 0 20px;position:relative;padding-top:12px;}
   h2::before{content:"";display:block;width:48px;height:4px;background:var(--orange);margin-bottom:12px;border-radius:2px;}
-  p{font-size:16px;color:#444;line-height:1.8;margin-bottom:12px;}
-  .highlight{background:linear-gradient(180deg,transparent 60%,rgba(255,122,0,.2) 60%);padding:0 4px;}
+  p{font-size:16px;line-height:1.8;color:var(--ink);margin-bottom:12px;opacity:.85;}
+
+  /* scroll animation */
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .6s,transform .6s;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
+  /* expand */
+  .accordion{border:1px solid var(--border);border-radius:12px;margin:12px 0;overflow:hidden;background:var(--card-bg);box-shadow:0 2px 8px var(--shadow);}
+  .accordion-header{width:100%;background:none;border:none;padding:20px 24px;text-align:left;font-size:17px;font-weight:700;color:var(--ink);cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
+  .accordion-header::after{content:"+";font-size:22px;color:var(--orange);transition:transform .3s;}
+  .accordion.open .accordion-header::after{transform:rotate(45deg);}
+  .accordion-body{max-height:0;overflow:hidden;transition:max-height .4s ease;padding:0 24px;}
+  .accordion.open .accordion-body{max-height:300px;padding:0 24px 20px;}
+
   .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:24px 0;}
-  .card{background:var(--white);border-radius:12px;padding:28px 24px;box-shadow:0 2px 12px rgba(0,0,0,.06);text-align:center;}
+  .card{background:var(--card-bg);border-radius:12px;padding:28px 24px;box-shadow:0 2px 12px var(--shadow);text-align:center;transition:transform .3s;}
+  .card:hover{transform:translateY(-4px);}
   .card .icon{font-size:36px;margin-bottom:12px;}
-  .card h3{font-size:18px;margin-bottom:8px;color:var(--ink);}
+  .card h3{margin-bottom:8px;}
   .card p{font-size:14px;color:var(--muted);}
-  .cta{text-align:center;padding:60px 20px;background:var(--white);border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);}
-  .cta h2{font-size:24px;margin-bottom:8px;}
+
+  .flow{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:24px 0;font-size:14px;}
+  .flow span{background:var(--orange);color:#fff;padding:10px 18px;border-radius:8px;font-weight:600;}
+  .flow .arrow{background:transparent;color:var(--orange);font-size:20px;padding:0;font-weight:800;}
+
+  /* CTA */
+  .cta{text-align:center;padding:60px 20px;background:var(--card-bg);border-radius:16px;box-shadow:0 2px 12px var(--shadow);margin:60px 0;}
+  .cta h2{font-size:24px;margin:0 0 8px;padding:0;}
   .cta h2::before{display:none;}
   .cta p{font-size:18px;color:var(--muted);margin-bottom:20px;}
-  .btn{display:inline-block;background:var(--orange);color:var(--white);padding:14px 40px;border-radius:8px;font-size:16px;font-weight:700;text-decoration:none;transition:transform .2s;}
-  .btn:hover{transform:translateY(-2px);}
-  .flow{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:24px 0;font-size:14px;}
-  .flow span{background:var(--ink);color:var(--white);padding:10px 18px;border-radius:8px;font-weight:600;}
-  .flow .arrow{background:transparent;color:var(--orange);font-size:20px;padding:0;}
-  footer{text-align:center;padding:40px;color:var(--muted);font-size:13px;border-top:1px solid #eee;margin-top:60px;}
-  @media(max-width:640px){.grid3{grid-template-columns:1fr;}}
+  .btn{display:inline-block;background:var(--orange);color:#fff;padding:14px 40px;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;border:none;transition:transform .2s,box-shadow .2s;text-decoration:none;}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(255,122,0,.3);}
+
+  /* contact form */
+  .form-row{display:flex;gap:12px;margin-bottom:12px;}
+  .form-row input,.form-row select,.form-row textarea{flex:1;padding:12px 16px;border:1px solid var(--border);border-radius:8px;font-size:14px;background:var(--bg);color:var(--ink);font-family:inherit;}
+  textarea{width:100%;resize:vertical;min-height:100px;}
+
+  /* modal */
+  .modal-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.5);align-items:center;justify-content:center;}
+  .modal-overlay.active{display:flex;}
+  .modal{background:var(--card-bg);border-radius:16px;padding:40px;max-width:460px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.2);position:relative;}
+  .modal-close{position:absolute;top:12px;right:16px;background:none;border:none;font-size:24px;cursor:pointer;color:var(--muted);}
+  .modal h3{font-size:22px;margin-bottom:12px;}
+  .modal .btn{width:100%;text-align:center;margin-top:8px;}
+
+  footer{text-align:center;padding:40px;color:var(--muted);font-size:13px;border-top:1px solid var(--border);margin-top:60px;}
+
+  @media(max-width:640px){
+    .grid3{grid-template-columns:1fr;}
+    .nav-links{display:none;}
+    .form-row{flex-direction:column;}
+  }
 </style>
 </head>
 <body>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 1600 400"><g transform="translate(32 64) scale(.65)"><polygon points="128,0 239,64 239,192 128,256 17,192 17,64" stroke="var(--ink)" stroke-width="22" stroke-linejoin="round"/><path d="M239 64L259 76" stroke="#ff7a00" stroke-width="22" stroke-linecap="round"/><path d="M239 192L128 256" stroke="#ff7a00" stroke-width="22" stroke-linecap="round"/><path d="M173 80C143 63 104 71 83 101L111 117L73 184L107 204L145 137L173 153C184 124 199 95 173 80Z" fill="#ff7a00"/><circle cx="130" cy="122" r="18" fill="#fff"/></g></svg>
+    AI修理工
+  </a>
+  <div class="nav-links">
+    <a href="#about">关于</a>
+    <a href="#services">服务</a>
+    <a href="#flow">流程</a>
+    <a href="#contact">联系</a>
+    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">🌙 暗色</button>
+  </div>
+</nav>
+
 <header>
   <div class="logo-inline">
-    <svg viewBox="0 0 1600 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g transform="translate(96 72)">
-        <polygon points="128,0 239,64 239,192 128,256 17,192 17,64" stroke="#111111" stroke-width="22" stroke-linejoin="round"/>
-        <path d="M239 64L259 76" stroke="#ff7a00" stroke-width="22" stroke-linecap="round"/>
-        <path d="M239 192L128 256" stroke="#ff7a00" stroke-width="22" stroke-linecap="round"/>
-        <path d="M173 80C143 63 104 71 83 101L111 117L73 184L107 204L145 137L173 153C184 124 199 95 173 80Z" fill="#ff7a00"/>
-        <circle cx="130" cy="122" r="18" fill="#FFFFFF"/>
-      </g>
-      <g transform="translate(410 72)">
-        <g mask="url(#m)">
-          <text x="0" y="126" style="fill:#111;font-family:Arial Black,Arial,sans-serif;font-size:142px;font-weight:900;letter-spacing:-2px;">AI</text>
-          <text x="198" y="125" style="fill:#111;font-family:PingFang SC,Microsoft YaHei,sans-serif;font-size:126px;font-weight:900;letter-spacing:4px;">修理工</text>
-        </g>
-        <path d="M1 164H158" stroke="#ff7a00" stroke-width="5" stroke-linecap="round"/>
-        <text x="0" y="224" style="fill:#777;font-family:PingFang SC,Microsoft YaHei,sans-serif;font-size:40px;font-weight:500;letter-spacing:10px;">咨询 · 实施 · 优化</text>
-      </g>
-      <defs>
-        <mask id="m" x="0" y="0" width="880" height="170" maskUnits="userSpaceOnUse">
-          <rect x="0" y="0" width="880" height="170" fill="white"/>
-          <path d="M326 32H364L346 51H308L326 32Z" fill="black"/>
-          <path d="M516 108H560L541 128H497L516 108Z" fill="black"/>
-          <path d="M746 66H790L771 86H727L746 66Z" fill="black"/>
-        </mask>
-      </defs>
-    </svg>
+    <svg viewBox="0 0 1600 400"><g transform="translate(96 72)"><polygon points="128,0 239,64 239,192 128,256 17,192 17,64" stroke="var(--ink)" stroke-width="22" stroke-linejoin="round"/><path d="M239 64L259 76" stroke="#ff7a00" stroke-width="22" stroke-linecap="round"/><path d="M239 192L128 256" stroke="#ff7a00" stroke-width="22" stroke-linecap="round"/><path d="M173 80C143 63 104 71 83 101L111 117L73 184L107 204L145 137L173 153C184 124 199 95 173 80Z" fill="#ff7a00"/><circle cx="130" cy="122" r="18" fill="#fff"/></g><g transform="translate(410 72)"><text x="0" y="126" style="fill:var(--ink);font-family:Arial Black,Arial,sans-serif;font-size:142px;font-weight:900;letter-spacing:-2px">AI</text><text x="198" y="125" style="fill:var(--ink);font-family:PingFang SC,Microsoft YaHei,sans-serif;font-size:126px;font-weight:900;letter-spacing:4px">修理工</text><path d="M1 164H158" stroke="#ff7a00" stroke-width="5" stroke-linecap="round"/><text x="0" y="224" style="fill:var(--muted);font-family:PingFang SC,Microsoft YaHei,sans-serif;font-size:40px;font-weight:500;letter-spacing:10px">咨询 · 实施 · 优化</text></g></svg>
   </div>
+  <p class="hero-sub reveal">可量化 · 可落地 · 可验证</p>
 </header>
 
-<main>
-  <div class="section">
-    <h2>我们做什么</h2>
-    <p>AI修理工致力于为企业提供<span class="highlight">可量化、可落地、可验证</span>的AI改造服务。不卖问卷、不卖工具，我们交付的是经过实测的ROI数字——从诊断到落地，让企业AI投资第一次算得清、落得下、越做越强。</p>
-  </div>
+<main class="container">
+  <section id="about" class="reveal">
+    <h2>关于我们</h2>
+    <p>AI修理工致力于为企业提供<span style="background:linear-gradient(180deg,transparent 60%,rgba(255,122,0,.2) 60%);padding:0 4px;">可量化、可落地、可验证</span>的AI改造服务。不卖问卷、不卖工具——从诊断到落地陪跑，让企业AI投资第一次算得清、落得下。</p>
+  </section>
 
-  <div class="section">
-    <h2>三步完成AI改造</h2>
+  <section id="services" class="reveal">
+    <h2>服务详情</h2>
+    <div class="accordion">
+      <button class="accordion-header" onclick="toggleAccordion(this)">📋 AI机会诊断</button>
+      <div class="accordion-body"><p>10分钟科学问卷，把主观场景变成客观账单。产出：机会热力图、Top10 ROI场景、2×2优先级矩阵。定位全公司AI最高回报的切入点，避免"上错了地方"。</p></div>
+    </div>
+    <div class="accordion">
+      <button class="accordion-header" onclick="toggleAccordion(this)">🔧 工作流改造</button>
+      <div class="accordion-body"><p>基于8类原子动作模型，把任何工作任务拆解为可AI化的标准单元。20-30个成熟模板覆盖80%场景，交付=拼装而非重造。每个动作附带耗时基线，改前改后ROI可测。</p></div>
+    </div>
+    <div class="accordion">
+      <button class="accordion-header" onclick="toggleAccordion(this)">✅ 落地陪跑</button>
+      <div class="accordion-body"><p>从MVP搭建到全员推广，团队驻场或远程陪跑。不交报告就走——陪到工作流上线、员工真实用起来、ROI数字出来为止。每次交付沉淀为行业常模。</p></div>
+    </div>
+  </section>
+
+  <section id="flow" class="reveal">
+    <h2>三步流程</h2>
     <div class="flow">
       <span>📋 在线诊断</span><span class="arrow">→</span>
       <span>🤖 AI方案匹配</span><span class="arrow">→</span>
       <span>✅ 落地陪跑交付</span>
     </div>
-  </div>
+  </section>
 
-  <div class="section">
-    <h2>为什么选我们</h2>
+  <section class="reveal">
+    <h2>三大差异化</h2>
     <div class="grid3">
-      <div class="card">
-        <div class="icon">💰</div>
-        <h3>算得清钱</h3>
-        <p>产出"每周省XX小时、年化XX万"的账单，而非模糊的能力评分</p>
-      </div>
-      <div class="card">
-        <div class="icon">🔧</div>
-        <h3>落得下去</h3>
-        <p>不是给一份报告就走——陪跑到工作流上线、员工用得起来为止</p>
-      </div>
-      <div class="card">
-        <div class="icon">📊</div>
-        <h3>越用越强</h3>
-        <p>每次交付沉淀为行业常模与成熟模板，抄不走的数据壁垒</p>
-      </div>
+      <div class="card"><div class="icon">💰</div><h3>算得清钱</h3><p>"每周烧XX小时，年化XX万"的账单，非模糊评分</p></div>
+      <div class="card"><div class="icon">🧩</div><h3>拼装式落地</h3><p>8类原子动作 × 20+模板，覆盖80%场景</p></div>
+      <div class="card"><div class="icon">📊</div><h3>越用越强</h3><p>每次交付沉淀为行业常模，抄不走</p></div>
     </div>
-  </div>
+  </section>
 
-  <div class="section">
-    <h2>服务范围</h2>
-    <div class="grid3">
-      <div class="card"><h3>AI机会诊断</h3><p>10分钟问卷，定位全公司AI最高ROI场景</p></div>
-      <div class="card"><h3>工作流改造</h3><p>把8类原子动作自动化，拼装而非重造</p></div>
-      <div class="card"><h3>落地陪跑</h3><p>从MVP到全员推广，全程在旁</p></div>
-    </div>
-  </div>
+  <section id="contact" class="reveal">
+    <h2>联系我们</h2>
+    <form style="background:var(--card-bg);padding:28px;border-radius:12px;box-shadow:0 2px 12px var(--shadow);" onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <input type="text" placeholder="姓名" required>
+        <input type="text" placeholder="公司名称" required>
+      </div>
+      <div class="form-row">
+        <input type="email" placeholder="邮箱" required>
+        <input type="tel" placeholder="手机号">
+      </div>
+      <div class="form-row">
+        <select required>
+          <option value="">需求类型</option>
+          <option>AI机会诊断</option>
+          <option>工作流改造</option>
+          <option>落地陪跑</option>
+          <option>其他咨询</option>
+        </select>
+        <input type="text" placeholder="企业规模/人数">
+      </div>
+      <textarea placeholder="请简要描述您的需求" required></textarea>
+      <button type="submit" class="btn" style="margin-top:12px;width:100%;">提交咨询 →</button>
+    </form>
+  </section>
 
-  <div class="cta">
-    <h2>让您的企业AI投资，第一次就算得清</h2>
+  <div class="cta reveal">
+    <h2>让企业AI投资，第一次就算得清</h2>
     <p>免费获取AI机会初步诊断</p>
-    <a href="#" class="btn">预约诊断 →</a>
+    <button class="btn" onclick="openModal()">立即预约 →</button>
   </div>
 </main>
 
-<footer>
-  &copy; 2026 AI修理工 · 咨询 · 实施 · 优化
-</footer>
+<div class="modal-overlay" id="bookingModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h3>🗓 预约AI机会诊断</h3>
+    <p style="color:var(--muted);margin-bottom:16px;">填写信息，我们将在24小时内联系您</p>
+    <div class="form-row"><input type="text" placeholder="姓名"></div>
+    <div class="form-row"><input type="email" placeholder="邮箱"></div>
+    <div class="form-row"><input type="text" placeholder="公司名称"></div>
+    <div class="form-row"><input type="date"></div>
+    <button class="btn" onclick="confirmBooking()">确认预约</button>
+  </div>
+</div>
+
+<footer>&copy; 2026 AI修理工 · 咨询 · 实施 · 优化</footer>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold:0.15});
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Accordion
+function toggleAccordion(btn){ btn.parentElement.classList.toggle('open'); }
+
+// Theme toggle
+function toggleTheme(){
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('themeBtn').textContent = isDark ? '🌙 暗色' : '☀️ 亮色';
+  localStorage.setItem('theme', isDark ? 'light' : 'dark');
+}
+(function(){
+  if(localStorage.getItem('theme')==='dark') toggleTheme();
+})();
+
+// Modal
+function openModal(){ document.getElementById('bookingModal').classList.add('active'); }
+function closeModal(){ document.getElementById('bookingModal').classList.remove('active'); }
+function confirmBooking(){ alert('✅ 预约已提交，我们将在24小时内联系您'); closeModal(); }
+document.getElementById('bookingModal').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
+
+// Form submit
+function handleSubmit(e){ e.preventDefault(); alert('✅ 咨询已提交，我们会尽快回复'); e.target.reset(); }
+
+// update logo SVG stroke color for dark mode
+function updateLogos(){
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  document.querySelectorAll('svg polygon, svg path[stroke], svg circle').forEach(el => {
+    const s = el.getAttribute('stroke');
+    if(s && s.includes('var')) el.setAttribute('stroke', isDark ? '#e0e0e0' : '#111');
+  });
+  document.querySelectorAll('svg text').forEach(el => {
+    if(el.style.fill.includes('var')) el.style.fill = isDark ? '#e0e0e0' : '#111';
+  });
+}
+document.addEventListener('themechange', updateLogos);
+</script>
 </body>
 </html>
