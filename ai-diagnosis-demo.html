@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>企业AI机会诊断 · Demo</title>
+<style>
+:root{--navy:#0f2a4a;--blue:#1f4e79;--accent:#2f80ed;--green:#27ae60;--gold:#d9a441;--orange:#ff7a00;--gray:#5b6b7d;--bg:#f4f6f9;--line:#e3e9f0;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"PingFang SC","Microsoft YaHei",-apple-system,sans-serif;background:var(--bg);color:#1a2733;line-height:1.6;}
+header{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:12px 28px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:50;}
+header .logo-svg{height:44px;width:auto;flex-shrink:0;}
+header .htxt{border-left:1px solid rgba(255,255,255,.25);padding-left:16px;}
+header .htitle{font-size:17px;font-weight:800;}
+header .sub{font-size:12px;color:#c9d8ea;}
+nav{display:flex;gap:4px;background:#fff;padding:0 20px;border-bottom:1px solid var(--line);position:sticky;top:68px;z-index:49;}
+nav button{background:none;border:none;padding:14px 20px;font-size:15px;color:var(--gray);cursor:pointer;border-bottom:3px solid transparent;font-family:inherit;}
+nav button.on{color:var(--blue);border-bottom-color:var(--orange);font-weight:700;}
+.wrap{max-width:1080px;margin:24px auto;padding:0 20px;}
+.page{display:none;} .page.on{display:block;animation:fade .3s;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;}}
+h2{font-size:24px;color:var(--blue);border-left:6px solid var(--orange);padding-left:14px;margin-bottom:6px;}
+.desc{color:var(--gray);margin-bottom:20px;font-size:14px;}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,.03);}
+.row{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+.row label{width:150px;font-weight:600;}
+.row .q{font-size:12px;color:var(--gray);}
+input[type=number],input[type=text],select{padding:9px 12px;border:1px solid #cdd7e2;border-radius:8px;font-size:14px;font-family:inherit;}
+input[type=number]{width:90px;}
+input[type=text]{flex:1;min-width:220px;}
+.tip{background:#fff4ea;border-left:4px solid var(--orange);padding:10px 14px;border-radius:6px;font-size:14px;margin-bottom:16px;color:#8a4b00;}
+.btn{background:var(--accent);color:#fff;border:none;padding:11px 22px;border-radius:8px;font-size:15px;cursor:pointer;font-family:inherit;}
+.btn.orange{background:var(--orange);}
+.btn.ghost{background:#fff;color:var(--blue);border:1px solid var(--accent);}
+.btn:hover{opacity:.9;}
+.est{background:linear-gradient(135deg,#fff1e3,#fff8f2);border-radius:12px;padding:20px;text-align:center;margin-top:10px;}
+.est .big{font-size:40px;font-weight:800;color:var(--orange);}
+.est .money{font-size:22px;color:var(--navy);font-weight:700;margin-left:14px;}
+table{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px;}
+th{background:var(--navy);color:#fff;padding:10px;text-align:left;font-weight:600;}
+td{padding:9px 10px;border-bottom:1px solid var(--line);}
+tr:nth-child(even){background:#f8fafc;}
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:12px;color:#fff;}
+.b-win{background:var(--green);}.b-str{background:var(--blue);}.b-easy{background:var(--gold);}.b-no{background:#8a99a8;}
+.opt{display:inline-flex;flex-direction:column;gap:6px;}
+.opt label{display:flex;gap:6px;align-items:center;width:auto;font-weight:400;cursor:pointer;font-size:14px;}
+.chips label{display:inline-flex;gap:5px;align-items:center;background:#f0f4f9;padding:6px 10px;border-radius:16px;margin:3px;cursor:pointer;font-size:13px;font-weight:400;width:auto;}
+.chips input:checked+span{font-weight:700;color:var(--blue);}
+.ai{background:#fff8e6;border:1px solid #f0d894;border-radius:8px;padding:10px 14px;margin:8px 0;font-size:13px;display:none;}
+.ai.warn{background:#fdecec;border-color:#f0b0b0;}
+.ai .btns{margin-top:6px;display:flex;gap:8px;}
+.ai .mini{font-size:12px;padding:4px 12px;border-radius:6px;border:none;cursor:pointer;}
+.ai .yes{background:var(--green);color:#fff;}.ai .no{background:#ddd;}
+.hint-btn{font-size:12px;color:var(--orange);cursor:pointer;background:none;border:1px dashed var(--orange);border-radius:12px;padding:3px 10px;margin-left:8px;}
+.matrix{display:grid;grid-template-columns:60px 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:6px;margin-top:14px;}
+.quad{border-radius:8px;padding:12px;min-height:120px;color:#fff;font-size:13px;}
+.quad h4{font-size:15px;margin-bottom:8px;}
+.quad .sc{background:rgba(255,255,255,.22);border-radius:5px;padding:3px 7px;margin:3px 0;font-size:12px;}
+.axis{display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:12px;font-weight:600;}
+.axis.v{writing-mode:vertical-rl;}
+.kpi{display:flex;gap:16px;flex-wrap:wrap;}
+.kpi .k{flex:1;min-width:150px;background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border-radius:12px;padding:18px;}
+.kpi .k .n{font-size:32px;font-weight:800;}
+.kpi .k .l{font-size:13px;color:#c9d8ea;}
+.progbar{background:#eef2f7;border-radius:10px;height:22px;overflow:hidden;margin:4px 0;}
+.progbar>div{height:100%;background:var(--green);color:#fff;font-size:12px;text-align:right;padding-right:8px;line-height:22px;}
+.note{font-size:12px;color:var(--gray);margin-top:8px;}
+.tag4{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.tag4 .t{background:#f0f4f9;border-radius:8px;padding:10px 14px;font-size:13px;}
+.tag4 .t b{color:var(--blue);}
+@media print{header,nav,.hint-btn,.btn,.no-print{display:none!important;}.page{display:block!important;}body{background:#fff;}}
+</style>
+</head>
+<body>
+<header>
+  <svg class="logo-svg" viewBox="0 0 1600 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AI修理工">
+    <g transform="translate(96 72)">
+      <polygon points="128,0 239,64 239,192 128,256 17,192 17,64" stroke="#ffffff" stroke-width="22" stroke-linejoin="round" fill="none"/>
+      <path d="M239 64L259 76" stroke="#ff7a00" stroke-width="22" stroke-linecap="round"/>
+      <path d="M239 192L128 256" stroke="#ff7a00" stroke-width="22" stroke-linecap="round"/>
+      <path d="M173 80C143 63 104 71 83 101L111 117L73 184L107 204L145 137L173 153C184 124 199 95 173 80Z" fill="#ff7a00"/>
+      <circle cx="130" cy="122" r="18" fill="#0f2a4a"/>
+    </g>
+    <g transform="translate(410 72)">
+      <text x="0" y="126" fill="#ffffff" font-family="'Arial Black',Arial,sans-serif" font-size="142" font-weight="900" letter-spacing="-2">AI</text>
+      <text x="198" y="125" fill="#ffffff" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="126" font-weight="900" letter-spacing="4">修理工</text>
+      <path d="M1 164H158" stroke="#ff7a00" stroke-width="5" stroke-linecap="round"/>
+      <text x="0" y="224" fill="#c9d8ea" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="40" font-weight="500" letter-spacing="10">咨询 · 实施 · 优化</text>
+    </g>
+  </svg>
+  <div class="htxt">
+    <div class="htitle">企业AI机会诊断</div>
+    <div class="sub">Demo · 演示用假数据 · 无真实支付/后端</div>
+  </div>
+</header>
+<nav>
+  <button class="on" onclick="go(0,this)">① 建项目 / 估算</button>
+  <button onclick="go(1,this)">② 员工填问卷</button>
+  <button onclick="go(2,this)">③ 诊断报告</button>
+  <button onclick="go(3,this)">④ 管理看板</button>
+</nav>
+<div class="wrap">
+
+<section class="page on">
+  <h2>建立测评项目</h2>
+  <p class="desc">填写各层级人数，系统自动估算问卷份数与费用。份数可跳过，用完随时补。</p>
+  <div class="tip">💡 每位员工需填 2–3 份问卷（能力+场景+管理层专项），<b>总份数会明显多于员工人数</b>。例如 100 人企业约需 218 份。</div>
+  <div class="card">
+    <div class="tag4">
+      <div class="t"><b>基础员工</b> → 问卷1 + 问卷2（人均2份）</div>
+      <div class="t"><b>中层管理</b> → 问卷1+2+3（人均3份）</div>
+      <div class="t"><b>高层管理</b> → 问卷1 + 问卷3（人均2份）</div>
+      <div class="t"><b>IT/HR/流程负责人</b> → 额外 + 问卷4（人均+1份）</div>
+    </div>
+    <div class="row"><label>基础员工</label><input type="number" id="e1" value="80" oninput="calc()"> 人</div>
+    <div class="row"><label>中层管理</label><input type="number" id="e2" value="15" oninput="calc()"> 人</div>
+    <div class="row"><label>高层管理</label><input type="number" id="e3" value="5" oninput="calc()"> 人</div>
+    <div class="row"><label>IT/HR/流程负责人</label><input type="number" id="e4" value="3" oninput="calc()"> 人</div>
+    <div class="est">
+      <span>预计总份数</span><span class="big" id="fenshu">218</span><span> 份</span>
+      <span class="money" id="money">¥6,540</span>
+      <div class="note">单价 ¥30/份 · 含 ±10% 浮动余量 · 未用完可转增值服务或下次抵扣（不退现金）</div>
+    </div>
+    <div style="margin-top:18px;display:flex;gap:12px;">
+      <button class="btn orange" onclick="alert('Demo 不含真实支付。真实版此处进入付款并生成员工参与链接/二维码。')">按此份数付款</button>
+      <button class="btn ghost" onclick="alert('已跳过精确估算，可先付一笔按实际扣减。')">跳过，先估算</button>
+    </div>
+  </div>
+  <div class="card">
+    <h4 style="color:var(--blue);margin-bottom:8px;">员工如何参与（免注册）</h4>
+    <p style="font-size:14px;color:var(--gray);">付款后系统生成 <b>专属链接 + 项目二维码</b>，群发给员工。员工点开无需注册，只填「姓名/工号 + 部门 + 层级」即可开始，系统按层级自动推送对应问卷。可选开启邮箱/手机验证码排重。</p>
+  </div>
+</section>
+
+<section class="page">
+  <h2>填写问卷 · 任务盘点</h2>
+  <p class="desc">免注册接入示意。填报你最耗时/最头疼的具体工作，AI 会在你卡壳或填得不规范时给建议——但改不改由你决定。</p>
+  <div class="card">
+    <div class="row"><label>姓名/工号</label><input type="text" value="示例·王工" style="max-width:200px;">
+      <label style="width:auto;">部门</label><select><option>销售部</option><option>质量部</option><option>财务部</option></select>
+      <label style="width:auto;">层级</label><select><option>一线执行</option><option>基层管理</option><option>中层管理</option></select>
+    </div>
+  </div>
+  <div class="card">
+    <div class="row"><label>任务名称</label>
+      <input type="text" id="tname" placeholder="具体描述这件事…" oninput="checkName()">
+      <button class="hint-btn" onclick="showHint()">💡不知道怎么写?</button>
+    </div>
+    <div class="ai" id="ai-hint">🤖 换个说法——你每天/每周重复做、又觉得烦的具体一件事是什么？比如"每周手工把3个系统数据拼成周报"。</div>
+    <div class="ai" id="ai-vague">🤖 "<span id="vagueword"></span>" 有点笼统，要不要具体成「XX报表 / 每周从X个系统汇总…」？这样诊断更准。
+      <div class="btns"><button class="mini yes" onclick="acceptVague()">采纳建议</button><button class="mini no" onclick="hide('ai-vague')">保持不变</button></div>
+    </div>
+
+    <div class="row" style="align-items:flex-start;"><label>A1 频率 F</label>
+      <div class="opt" id="F">
+        <label><input type="radio" name="F" value="1">①很少（月一两次）</label>
+        <label><input type="radio" name="F" value="2">②每月几次</label>
+        <label><input type="radio" name="F" value="3" checked>③每周一两次</label>
+        <label><input type="radio" name="F" value="4">④每天一次左右</label>
+        <label><input type="radio" name="F" value="5" onclick="checkConflict()">⑤每天多次/持续</label>
+      </div>
+    </div>
+    <div class="row" style="align-items:flex-start;"><label>A2 消耗 C</label>
+      <div class="opt" id="C">
+        <label><input type="radio" name="C" value="1">①几分钟</label>
+        <label><input type="radio" name="C" value="2">②半小时内</label>
+        <label><input type="radio" name="C" value="3" checked>③半天内</label>
+        <label><input type="radio" name="C" value="4" onclick="checkConflict()">④一天左右</label>
+        <label><input type="radio" name="C" value="5" onclick="checkConflict()">⑤多天/极耗精力</label>
+      </div>
+    </div>
+    <div class="ai warn" id="ai-conflict">⚠️ 你选了「每天多次」+「每次要一天以上」，物理上冲突，请确认是否填错。</div>
+
+    <div class="row" style="align-items:flex-start;"><label>A3 复杂度 X</label>
+      <div class="opt">
+        <label><input type="radio" name="X" value="1">①机械重复</label>
+        <label><input type="radio" name="X" value="2" checked>②固定步骤</label>
+        <label><input type="radio" name="X" value="3">③偶尔判断</label>
+        <label><input type="radio" name="X" value="4">④常需专业判断</label>
+        <label><input type="radio" name="X" value="5">⑤高度复杂</label>
+      </div>
+    </div>
+    <div class="row" style="align-items:flex-start;"><label>A5b 为什么耗费<span class="q">(最多3项)</span></label>
+      <div class="chips">
+        <label><input type="checkbox"><span>数据来源太多</span></label>
+        <label><input type="checkbox"><span>反复复制粘贴</span></label>
+        <label><input type="checkbox"><span>信息找不到</span></label>
+        <label><input type="checkbox"><span>反复重复输入</span></label>
+        <label><input type="checkbox"><span>审批/等待</span></label>
+        <label><input type="checkbox"><span>沟通协调多</span></label>
+        <label><input type="checkbox"><span>判断太复杂</span></label>
+        <label><input type="checkbox"><span>缺标准流程</span></label>
+        <label><input type="checkbox"><span>缺经验/靠老师傅</span></label>
+        <label><input type="checkbox"><span>系统太多</span></label>
+        <label><input type="checkbox"><span>完全手工</span></label>
+      </div>
+    </div>
+    <div class="row" style="align-items:flex-start;"><label>A7 出错风险</label>
+      <div class="opt">
+        <label><input type="radio" name="R" checked>①无所谓</label>
+        <label><input type="radio" name="R">②内部返工</label>
+        <label><input type="radio" name="R">③影响他部门</label>
+        <label><input type="radio" name="R">④影响客户</label>
+        <label><input type="radio" name="R">⑤重大损失/合规</label>
+      </div>
+    </div>
+    <div class="row" style="align-items:flex-start;"><label>A8 流程四步</label>
+      <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <input type="text" placeholder="① 从哪开始（输入）"><input type="text" placeholder="② 中间哪几步">
+        <input type="text" placeholder="③ 最后输出什么"><input type="text" placeholder="④ 哪步最耗时/最卡">
+      </div>
+    </div>
+    <div style="margin-top:16px;"><button class="btn" onclick="alert('已提交本任务。真实版可继续填第2-5个任务。')">提交此任务</button></div>
+    <p class="note">🔒 本问卷不评价个人能力，结果只按部门汇总，不用于任何个人考核。</p>
+  </div>
+</section>
+
+<section class="page">
+  <h2>企业AI机会诊断报告</h2>
+  <p class="desc">基于全员问卷自动生成（本页为演示数据）。报告给到「机会+ROI+推荐技术+涉及模块」，落地实施为付费增值服务。</p>
+  <div class="kpi">
+    <div class="k"><div class="n">320<span style="font-size:16px;"> 小时/周</span></div><div class="l">全公司耗在可AI改造工作上的工时</div></div>
+    <div class="k"><div class="n">¥83<span style="font-size:16px;"> 万/年</span></div><div class="l">可折算的年化机会价值</div></div>
+    <div class="k"><div class="n">6</div><div class="l">识别出的高价值场景</div></div>
+    <div class="k"><div class="n">3</div><div class="l">可一期落地的速赢场景</div></div>
+  </div>
+
+  <div class="card">
+    <h4 style="color:var(--blue);margin-bottom:6px;">Top 场景排行（按 综合优先级 ΣV×K）</h4>
+    <table id="scoreTable"><thead><tr><th>场景</th><th>部门</th><th>人次</th><th>ΣV(周时)</th><th>主痛因</th><th>原子动作</th><th>推荐AI方案</th><th>可行性K</th><th>象限</th></tr></thead><tbody></tbody></table>
+  </div>
+
+  <div class="card">
+    <h4 style="color:var(--blue);margin-bottom:6px;">优先级矩阵（痛点总量 × 可行性）</h4>
+    <div class="matrix">
+      <div class="axis"></div><div class="axis">← 可行性 K 低</div><div class="axis">可行性 K 高 →</div>
+      <div class="axis v">痛点 ΣV 高 →</div>
+      <div class="quad b-str"><h4>战略项目</h4><div id="q-str"></div></div>
+      <div class="quad b-win"><h4>速赢 ⭐</h4><div id="q-win"></div></div>
+      <div class="axis v">← 低</div>
+      <div class="quad b-no"><h4>先别碰</h4><div id="q-no"></div></div>
+      <div class="quad b-easy"><h4>顺手做</h4><div id="q-easy"></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h4 style="color:var(--blue);margin-bottom:8px;">实施建议卡 · Top1「销售周报手工汇总」</h4>
+    <table>
+      <tr><td style="width:130px;font-weight:600;">推荐AI方案</td><td>RPA自动化（从3个系统自动取数拼表）</td></tr>
+      <tr><td style="font-weight:600;">涉及原子动作</td><td>AC2 录入/搬运 + AC3 转换/整理</td></tr>
+      <tr><td style="font-weight:600;">AI介入模式</td><td>完全替代（人只做最终确认）</td></tr>
+      <tr><td style="font-weight:600;">预估年化节省</td><td><b style="color:var(--green);">约 ¥15 万</b>（12人 × 每周省约5小时）</td></tr>
+      <tr><td style="font-weight:600;">分期建议</td><td>一期（3个月内）落地，属技术成熟的速赢场景</td></tr>
+    </table>
+    <div class="tip" style="margin-top:14px;">诊断结论：贵公司AI改造最大速赢在「数据搬运类」工作——销售周报、客户资料整理两场景每周合计约98小时、技术成熟可行性高，建议一期落地RPA/Agent；质量异常分析价值高但依赖老师傅经验，建议二期配知识库、先辅助不替代。</div>
+    <p class="note no-print">📄 深度解读报告与落地实施为付费增值服务。使用浏览器打印（Ctrl/Cmd+P）可将本报告存为 PDF。</p>
+    <button class="btn no-print orange" style="margin-top:8px;" onclick="window.print()">🖨 打印 / 存为 PDF</button>
+  </div>
+</section>
+
+<section class="page">
+  <h2>管理看板 · 填写进度</h2>
+  <p class="desc">管理员只看部门/层级汇总，看不到任何个人明细分数（隐私保护）。</p>
+  <div class="kpi" style="margin-bottom:20px;">
+    <div class="k"><div class="n">218</div><div class="l">应填份数</div></div>
+    <div class="k"><div class="n">156</div><div class="l">已完成</div></div>
+    <div class="k"><div class="n">42</div><div class="l">进行中</div></div>
+    <div class="k"><div class="n">20</div><div class="l">未开始</div></div>
+  </div>
+  <div class="card">
+    <h4 style="color:var(--blue);margin-bottom:10px;">各部门完成率</h4>
+    <div>销售部<div class="progbar"><div style="width:95%">95%</div></div></div>
+    <div>客服部<div class="progbar"><div style="width:88%">88%</div></div></div>
+    <div>质量部<div class="progbar"><div style="width:72%">72%</div></div></div>
+    <div>财务部<div class="progbar"><div style="width:40%;background:#e0a800;">40%</div></div></div>
+    <div style="margin-top:14px;">
+      <button class="btn orange" onclick="alert('已向未完成人员发送邮件/企业微信提醒。余额不足时同时提醒管理员补款。')">一键催填未完成</button>
+    </div>
+    <p class="note">邮件授权=企业管控：只有管理员导入白名单的邮箱/工号能填，防外部乱填。</p>
+  </div>
+</section>
+
+</div>
+<script>
+const scenes=[
+ {s:"销售周报手工汇总",d:"销售部",n:12,v:56,p:"数据来源太多",a:"AC2搬运",plan:"RPA自动化",k:0.90,q:"win"},
+ {s:"质量异常分析报告",d:"质量部",n:8,v:48,p:"缺经验靠老师傅",a:"AC5判断",plan:"大模型+专家知识库",k:0.55,q:"str"},
+ {s:"客户资料整理归档",d:"客服部",n:15,v:42,p:"反复复制粘贴",a:"AC3转换",plan:"Agent自动整理",k:0.88,q:"win"},
+ {s:"报销单据核对",d:"财务部",n:6,v:30,p:"容易出错",a:"AC4比对",plan:"规则+AI校验",k:0.85,q:"win"},
+ {s:"招聘简历初筛",d:"HR",n:4,v:24,p:"信息找不到",a:"AC1获取",plan:"知识库/RAG",k:0.85,q:"easy"},
+ {s:"跨部门项目协调",d:"运营部",n:10,v:38,p:"沟通协调太多",a:"AC7沟通",plan:"会议纪要/提醒",k:0.35,q:"no"},
+];
+const qmap={win:'b-win',str:'b-str',easy:'b-easy',no:'b-no'},qname={win:'速赢',str:'战略',easy:'顺手',no:'先别碰'};
+const tb=document.querySelector('#scoreTable tbody');
+scenes.slice().sort((a,b)=>b.v*b.k-a.v*a.k).forEach(x=>{
+ tb.innerHTML+=`<tr><td>${x.s}</td><td>${x.d}</td><td>${x.n}</td><td>${x.v}</td><td>${x.p}</td><td>${x.a}</td><td>${x.plan}</td><td>${x.k}</td><td><span class="badge ${qmap[x.q]}">${qname[x.q]}</span></td></tr>`;
+});
+scenes.forEach(x=>{const box=document.getElementById('q-'+x.q);if(box)box.innerHTML+=`<div class="sc">${x.s} · ΣV${x.v}</div>`;});
+function calc(){
+ const e1=+i('e1'),e2=+i('e2'),e3=+i('e3'),e4=+i('e4');
+ const f=e1*2+e2*3+e3*2+e4*1;
+ document.getElementById('fenshu').textContent=f;
+ document.getElementById('money').textContent='¥'+(f*30).toLocaleString();
+}
+function i(id){return document.getElementById(id).value||0;}
+function go(n,btn){document.querySelectorAll('.page').forEach((p,idx)=>p.classList.toggle('on',idx===n));document.querySelectorAll('nav button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');window.scrollTo(0,0);}
+function showHint(){document.getElementById('ai-hint').style.display='block';}
+function hide(id){document.getElementById(id).style.display='none';}
+const vague=['做报表','报表','管理','excel','统计','汇总','材料','沟通'];
+function checkName(){
+ const v=document.getElementById('tname').value.trim();
+ const box=document.getElementById('ai-vague');
+ if(v && v.length<=4 && vague.some(w=>v.includes(w))){document.getElementById('vagueword').textContent=v;box.style.display='block';}
+ else box.style.display='none';
+}
+function acceptVague(){document.getElementById('tname').value='每周手工从3个系统导出数据VLOOKUP拼成周报';hide('ai-vague');}
+function checkConflict(){
+ const F=document.querySelector('input[name=F]:checked'),C=document.querySelector('input[name=C]:checked');
+ const show=F&&C&&F.value=='5'&&+C.value>=4;
+ document.getElementById('ai-conflict').style.display=show?'block':'none';
+}
+calc();
+</script>
+</body>
+</html>
