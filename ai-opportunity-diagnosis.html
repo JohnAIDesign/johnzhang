@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企业AI机会诊断与改造方法论 · 投资人版</title>
+<style>
+  :root{--navy:#0f2a4a;--blue:#1f4e79;--accent:#2f80ed;--gold:#d9a441;--gray:#5b6b7d;--bg:#f4f6f9;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:"PingFang SC","Microsoft YaHei",-apple-system,sans-serif;color:#1a2733;background:var(--bg);line-height:1.6;}
+  .toolbar{position:fixed;top:16px;right:16px;z-index:99;}
+  .toolbar button{background:var(--accent);color:#fff;border:none;padding:10px 18px;border-radius:6px;font-size:14px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);}
+  .page{width:210mm;min-height:297mm;margin:16px auto;background:#fff;padding:22mm 20mm;box-shadow:0 4px 20px rgba(0,0,0,.12);position:relative;page-break-after:always;}
+  .page:last-child{page-break-after:auto;}
+  h1{font-size:30px;color:var(--navy);line-height:1.3;margin-bottom:8px;}
+  h2{font-size:23px;color:var(--blue);border-left:6px solid var(--accent);padding-left:14px;margin-bottom:18px;}
+  h3{font-size:17px;color:var(--navy);margin:16px 0 8px;}
+  p{margin-bottom:10px;color:#2a3947;}
+  .sub{color:var(--gray);font-size:16px;}
+  .tag{display:inline-block;background:var(--blue);color:#fff;font-size:12px;padding:3px 12px;border-radius:20px;margin-bottom:24px;}
+  ul{margin:8px 0 8px 20px;} li{margin-bottom:8px;}
+  .big{font-size:40px;font-weight:800;color:var(--accent);}
+  .card{background:var(--bg);border-radius:10px;padding:18px 20px;margin:12px 0;border-left:4px solid var(--accent);}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .box{background:#fff;border:1px solid #dbe3ec;border-radius:10px;padding:16px;}
+  .box .n{font-size:26px;font-weight:800;color:var(--accent);}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;}
+  th{background:var(--navy);color:#fff;padding:10px;text-align:left;}
+  td{padding:9px 10px;border-bottom:1px solid #e3e9f0;}
+  tr:nth-child(even){background:#f7f9fc;}
+  .flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;margin:18px 0;}
+  .flow .step{background:var(--blue);color:#fff;padding:10px 16px;border-radius:8px;font-size:14px;}
+  .flow .arr{color:var(--accent);font-size:20px;font-weight:800;}
+  .cover{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;display:flex;flex-direction:column;justify-content:center;}
+  .cover h1{color:#fff;font-size:38px;}
+  .cover .sub{color:#c9d8ea;font-size:19px;margin-top:16px;}
+  .cover .foot{position:absolute;bottom:22mm;color:#9fb6d0;font-size:14px;}
+  .note{font-size:12px;color:var(--gray);border-top:1px dashed #ccd6e0;padding-top:8px;margin-top:20px;}
+  .pageno{position:absolute;bottom:12mm;right:20mm;color:#b0bcc9;font-size:12px;}
+  @media print{body{background:#fff;}.toolbar{display:none;}.page{margin:0;box-shadow:none;width:auto;min-height:auto;}}
+</style>
+</head>
+<body>
+<div class="toolbar"><button onclick="window.print()">🖨 打印 / 存为PDF</button></div>
+
+<section class="page cover">
+  <h1>企业AI机会诊断与改造方法论</h1>
+  <p class="sub">从"该不该上AI"到"上哪、值多少、怎么落地"的全链路解决方案</p>
+  <div style="margin-top:40px;font-size:22px;font-weight:700;">让企业AI投资，第一次算得清、落得下、越做越强</div>
+  <div class="foot">投资人版 · v1 &nbsp;|&nbsp; 商业计划核心方法论</div>
+</section>
+
+<section class="page">
+  <span class="tag">市场痛点</span>
+  <h2>AI落地的三个"说不清"，是一个万亿级的未解决需求</h2>
+  <p>企业在AI上的浪费，不是没上，而是<b>上错了地方</b>——凭"技术能做什么"推功能，而非"业务哪里最痛最值得"来落地。</p>
+  <div class="grid3">
+    <div class="box"><div class="n">说不清该投哪</div><p>场景靠拍脑袋、听供应商，投入分散，POC死一片</p></div>
+    <div class="box"><div class="n">说不清值多少</div><p>上线后无法量化节省，预算续不下去，一把手失信心</p></div>
+    <div class="box"><div class="n">说不清怎么落</div><p>工具与实际场景对不上，闲置、员工抵触</p></div>
+  </div>
+  <div class="card"><b>根因：</b>市场缺一把客观的、能落到钱、能指导实施的尺子。传统人才测评测"人的软性特质"，主观难落地；企业真正需要的是对"工作场景AI适配度"的客观量化。</div>
+  <div class="pageno">02</div>
+</section>
+
+<section class="page">
+  <span class="tag">我们的解法</span>
+  <h2>不卖问卷、不卖工具，我们交付一个可验证的闭环</h2>
+  <div class="flow">
+    <span class="step">科学诊断</span><span class="arr">→</span>
+    <span class="step">算出AI机会账单</span><span class="arr">→</span>
+    <span class="step">工作流资产落地</span><span class="arr">→</span>
+    <span class="step">实测ROI</span><span class="arr">→</span>
+    <span class="step">数据回流建壁垒</span>
+  </div>
+  <h3>三大独特性</h3>
+  <div class="grid3">
+    <div class="box"><div class="n">① 能算出钱</div><p>产出"每周烧XX小时、年化XX万"的账单，而非能力评分</p></div>
+    <div class="box"><div class="n">② 可落地</div><p>把无限任务归约到8类原子动作，20-30个模板拼装，非每任务重造</p></div>
+    <div class="box"><div class="n">③ 越做越强</div><p>每次落地沉淀为行业常模+成熟模板，抄不走的数据壁垒</p></div>
+  </div>
+  <div class="pageno">03</div>
+</section>
+
+<section class="page">
+  <span class="tag">技术护城河</span>
+  <h2>五层拆解模型：把测量精确到可改造的"原子动作"</h2>
+  <div class="card" style="font-family:monospace;font-size:15px;line-height:2;">
+    岗位 Role<br>
+    &nbsp;└─ 任务 Task（员工报3-5个）<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;└─ 步骤 Step（仅瓶颈任务深挖）<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ <b style="color:#2f80ed;">原子动作 Action ★一步一主动作</b><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ 痛因 / 载体 / 风险 / 耗时<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ → AI能力 + 可行性K + 方案 + ROI
+  </div>
+  <p><b>关键：</b>任务是无限的、无法建常模；但<b>原子动作只有8类，是有限集合</b>——"动作的痛因分布、可行性分布"可跨企业跨行业沉淀为基准。这是整个数据壁垒的数学基础。</p>
+  <div class="pageno">04</div>
+</section>
+
+<section class="page">
+  <span class="tag">诊断端</span>
+  <h2>10分钟问卷，把主观场景变成客观账单</h2>
+  <table>
+    <tr><th>采集维度</th><th>转化为</th></tr>
+    <tr><td>频率F × 消耗C</td><td>周耗时（可直接算钱的比率量表）</td></tr>
+    <tr><td>复杂度X</td><td>倒U权重W(X)：识别AI甜点区，避开POC死亡区</td></tr>
+    <tr><td>痛因</td><td>反推AI方案类型（找不到→知识库/重复→自动化/判断→大模型）</td></tr>
+    <tr><td>载体 · 风险</td><td>供专家评定可行性</td></tr>
+    <tr><td>接受度</td><td>高可行×低接受度=需先变革管理（独家洞察）</td></tr>
+  </table>
+  <p><b>双脚手架</b>适配知识型(K)/制造一线(O)/混合(M)，白领与车间都对得上号。<b>产出：</b>机会热力图、Top10账单、2×2优先级矩阵。</p>
+  <div class="pageno">05</div>
+</section>
+
+<section class="page">
+  <span class="tag">推理端</span>
+  <h2>原子动作引擎：无主观打分的查表推理链</h2>
+  <div class="flow">
+    <span class="step">输入<br>动作/痛因/载体/风险</span><span class="arr">→</span>
+    <span class="step">查表<br>K=K技术×K数据×K容错</span><span class="arr">→</span>
+    <span class="step">输出<br>方案/介入模式/ROI</span>
+  </div>
+  <h3>产出两个能写进合同的数字</h3>
+  <div class="grid2">
+    <div class="box"><div class="n">可自动化比例</div><p>"这个任务64%的工时可被AI接管，每人每周省7小时"</p></div>
+    <div class="box"><div class="n">动作热力图</div><p>"全公司40%工时耗在搬运和检索——先上这两块"，且跨企业可比=常模资产</p></div>
+  </div>
+  <div class="pageno">06</div>
+</section>
+
+<section class="page">
+  <span class="tag">交付端 · 护城河</span>
+  <h2>别人落地会死，我们不会：工作流资产化</h2>
+  <div class="card"><b>核心反转：</b>工作流绑定"动作×载体×痛因"（有限组合），<b>不绑定任务</b>（无限、建不完）。8类动作×3-4载体 ≈ 20-30个模板覆盖80%场景，交付=拼装乐高，非重造。</div>
+  <div class="grid2">
+    <div class="box"><div class="n">80% 模板</div><p>通用资产，越攒越厚，养壁垒</p></div>
+    <div class="box"><div class="n">20% 适配</div><p>最后一公里现场服务，按项目收费</p></div>
+  </div>
+  <p style="margin-top:12px;"><b>ROI闭环：</b>真实年化ROI = 节省人力 − 建设成本 − token运行成本。诊断阶段采的"周耗时H"就是改造前基线——<b>我们是极少数能拿出AI改造ROI实测数字的乙方</b>。token在动作级即可预估，高频×大模型判断的场景诊断时就标"先别碰"。</p>
+  <div class="pageno">07</div>
+</section>
+
+<section class="page">
+  <span class="tag">增长飞轮 · 最关键一页</span>
+  <h2>越用越强：破解测量类产品的"常模冷启动悖论"</h2>
+  <div class="flow" style="flex-direction:column;gap:10px;">
+    <span class="step">诊断排序，只建ROI为正的动作级模板</span><span class="arr">↓</span>
+    <span class="step">拼装交付，H基线实测ROI</span><span class="arr">↓</span>
+    <span class="step">落地数据回流</span><span class="arr">↓</span>
+    <span class="step">模板更成熟 + 行业岗位常模更厚</span><span class="arr">↓</span>
+    <span class="step">交付更快、更准、更贵 → 更多客户 → 更多数据</span>
+  </div>
+  <div class="card"><b>冷启动破局路径：</b>诊断服务免费/低价切入 → 用账单说服客户买落地服务 → 落地数据回流建常模 → 产品变硬、溢价提升。商业化、数据积累、产品迭代三者同步。</div>
+  <div class="pageno">08</div>
+</section>
+
+<section class="page">
+  <span class="tag">竞争壁垒 & 商业模式</span>
+  <h2>题目公式可抄，落地数据与模板库抄不走</h2>
+  <div class="grid2">
+    <div class="box"><h3>可被模仿（非壁垒）</h3><ul><li>问卷题目</li><li>评分公式</li><li>方法论框架</li></ul></div>
+    <div class="box" style="border:2px solid var(--accent);"><h3 style="color:var(--accent);">真正的壁垒</h3><ul><li>行业×岗位AI适配<b>常模库</b></li><li>已验证ROI为正的<b>工作流模板库</b></li></ul></div>
+  </div>
+  <h3>商业模式：服务换数据</h3>
+  <p>以诊断+落地陪跑服务为载体，用服务利润覆盖冷启动成本，用真实业务数据解决常模缺失——兼顾营收与产品迭代。</p>
+  <div class="pageno">09</div>
+</section>
+
+<section class="page">
+  <span class="tag">团队 · 进展 · 融资</span>
+  <h2>下一步</h2>
+  <div class="grid2">
+    <div class="box"><h3>当前进展</h3><p>（占位：已完成方法论闭环、工具链、首批标杆客户……请填写）</p></div>
+    <div class="box"><h3>融资用途</h3><p>（占位：常模库建设、工作流模板库、行业垂直拓展……请填写）</p></div>
+  </div>
+  <div class="box" style="margin-top:16px;"><h3>团队</h3><p>（占位：核心团队背景……请填写）</p></div>
+  <div class="note">本页为占位框架，请填入实际数据后对外使用。方法论细节、常模数据与模板库为核心资产，另行沟通。</div>
+  <div class="pageno">10</div>
+</section>
+
+</body>
+</html>
